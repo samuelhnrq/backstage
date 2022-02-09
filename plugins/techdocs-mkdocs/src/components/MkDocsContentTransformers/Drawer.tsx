@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import { useEffect } from 'react';
 import { useTechDocsShadowDom } from '@backstage/plugin-techdocs';
-import { useCssLoading } from './hooks';
 
 const NAV_TITLE_SELECTOR = '.md-nav__title';
 
@@ -24,11 +24,11 @@ const NAV_TITLE_SELECTOR = '.md-nav__title';
  */
 export const DrawerTransformer = () => {
   const dom = useTechDocsShadowDom();
-  const loading = useCssLoading();
 
-  if (dom && !loading) {
+  useEffect(() => {
+    if (!dom) return;
     dom.querySelector(NAV_TITLE_SELECTOR)?.removeAttribute('for');
-  }
+  }, [dom]);
 
   return null;
 };

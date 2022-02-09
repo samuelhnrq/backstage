@@ -19,6 +19,7 @@ import React, {
   cloneElement,
   PropsWithChildren,
   useCallback,
+  useMemo,
 } from 'react';
 
 import DOMPurify from 'dompurify';
@@ -27,7 +28,10 @@ import { TechDocsShadowDomProvider } from './context';
 
 type SanitizeParameters = Parameters<typeof DOMPurify.sanitize>;
 export type TechDocsShadowDomSource = SanitizeParameters[0];
-export type TechDocsShadowDomConfig = SanitizeParameters[1];
+export type TechDocsShadowDomConfig = Omit<
+  SanitizeParameters[1],
+  'WHOLE_DOCUMENT' | 'RETURN_DOM'
+>;
 
 type AddHookParameters = Parameters<typeof DOMPurify.addHook>;
 type HookName = AddHookParameters[0];
@@ -54,10 +58,13 @@ export const TechDocsShadowDom = ({
     DOMPurify.addHook(name as HookName, callback);
   }
 
-  const sanitizedDom = DOMPurify.sanitize(source, {
-    ...config,
-    RETURN_DOM: true,
-  });
+  const sanitizedDom = useMemo(() => {
+    return DOMPurify.sanitize(source, {
+      ...config,
+      WHOLE_DOCUMENT: true,
+      RETURN_DOM: true,
+    });
+  }, [source, config]);
 
   const ref = useCallback(
     (element: HTMLElement) => {

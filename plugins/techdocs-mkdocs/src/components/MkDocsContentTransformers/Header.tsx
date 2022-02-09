@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
+import { useEffect } from 'react';
 import { useTechDocsShadowDom } from '@backstage/plugin-techdocs';
 
 export const HeaderTransformer = () => {
   const dom = useTechDocsShadowDom();
 
-  // Remove the header
-  dom.querySelector('.md-header')?.remove();
+  useEffect(() => {
+    if (!dom) return;
+
+    // Remove the header
+    dom.querySelector('.md-header')?.remove();
+  }, [dom]);
 
   return null;
 };

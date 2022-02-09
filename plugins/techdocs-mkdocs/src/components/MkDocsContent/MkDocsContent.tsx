@@ -51,8 +51,6 @@ export const MkDocsContent = () => {
   const config = {
     ADD_TAGS: ['link'],
     FORBID_TAGS: ['style'],
-    WHOLE_DOCUMENT: true,
-    RETURN_DOM: true,
   };
 
   const hooks: TechDocsShadowDomHooks = {

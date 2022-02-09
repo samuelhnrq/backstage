@@ -25,14 +25,18 @@ export const FooterTransformer = () => {
   const dom = useTechDocsShadowDom();
   const loading = useCssLoading();
 
-  // Remove the footer copyright
-  dom.querySelector(FOOTER_COPYRIGHT_SELECTOR)?.remove();
-
   useEffect(() => {
+    if (!dom) return;
+
+    // Remove the footer copyright
+    dom.querySelector(FOOTER_COPYRIGHT_SELECTOR)?.remove();
+
+    if (loading) return;
+
     const footer = dom.querySelector<HTMLElement>(FOOTER_SELECTOR);
-    if (footer) {
-      footer.style.width = `${dom.getBoundingClientRect().width}px`;
-    }
+    if (!footer) return;
+
+    footer.style.width = `${dom.getBoundingClientRect().width}px`;
   }, [dom, loading]);
 
   return null;
