@@ -33,6 +33,7 @@ describe('<DomainExplorerContent />', () => {
     getEntityByName: jest.fn(),
     refreshEntity: jest.fn(),
     getEntityAncestors: jest.fn(),
+    getEntityFacets: jest.fn(),
   };
 
   const Wrapper = ({ children }: { children?: React.ReactNode }) => (

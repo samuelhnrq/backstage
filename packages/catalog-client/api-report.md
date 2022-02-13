@@ -43,6 +43,10 @@ export interface CatalogApi {
     name: EntityName,
     options?: CatalogRequestOptions,
   ): Promise<Entity | undefined>;
+  getEntityFacets(
+    request: GetEntityFacetsRequest,
+    options?: CatalogRequestOptions,
+  ): Promise<GetEntityFacetsResponse>;
   getLocationByEntity(
     entity: Entity,
     options?: CatalogRequestOptions,
@@ -95,6 +99,10 @@ export class CatalogClient implements CatalogApi {
     compoundName: EntityName,
     options?: CatalogRequestOptions,
   ): Promise<Entity | undefined>;
+  getEntityFacets(
+    request: GetEntityFacetsRequest,
+    options?: CatalogRequestOptions,
+  ): Promise<GetEntityFacetsResponse>;
   getLocationByEntity(
     entity: Entity,
     options?: CatalogRequestOptions,
@@ -176,6 +184,26 @@ export interface GetEntityAncestorsResponse {
   }>;
   // (undocumented)
   rootEntityRef: string;
+}
+
+// @public
+export interface GetEntityFacetsRequest {
+  facets: string[];
+  filter?:
+    | Record<string, string | symbol | (string | symbol)[]>[]
+    | Record<string, string | symbol | (string | symbol)[]>
+    | undefined;
+}
+
+// @public
+export interface GetEntityFacetsResponse {
+  facets: Record<
+    string,
+    Array<{
+      value: string;
+      count: number;
+    }>
+  >;
 }
 
 // @public
