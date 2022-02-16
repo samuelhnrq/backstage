@@ -1,5 +1,26 @@
 # @backstage/plugin-scaffolder
 
+## 0.12.3
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- 538ca90790: Use updated type names from `@backstage/catalog-client`
+- e72d371296: Use `TemplateEntityV1beta2` from `@backstage/plugin-scaffolder-common` instead
+  of `@backstage/catalog-model`.
+- Updated dependencies
+  - @backstage/plugin-scaffolder-common@0.2.0
+  - @backstage/catalog-client@0.7.0
+  - @backstage/core-components@0.8.9
+  - @backstage/core-plugin-api@0.6.1
+  - @backstage/errors@0.2.1
+  - @backstage/integration@0.7.3
+  - @backstage/integration-react@0.1.22
+  - @backstage/plugin-catalog-react@0.6.15
+  - @backstage/plugin-permission-react@0.3.1
+  - @backstage/catalog-model@0.10.0
+  - @backstage/plugin-catalog-common@0.1.3
+
 ## 0.12.2
 
 ### Patch Changes

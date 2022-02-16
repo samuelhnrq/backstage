@@ -1,5 +1,20 @@
 # @backstage/cli
 
+## 0.13.3
+
+### Patch Changes
+
+- 0b74c72987: Added a new experimental and hidden `backstage-cli repo lint` command that can be used to lint all packages in the project, similar to `lerna run lint`.
+- 532dae9c4c: The `versions:bump --release next` command is updated to compare the `main` and `next` release manifests and prefer the latest.
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- 22862486de: The `versions:bump` command now filters out `npm_` environment configuration when running `yarn install`. This has the effect of allowing it to consider local configuration files within the repository, which is the behavior that one would expect.
+- 22862486de: The `versions:bump` command now also considers the root `package.json` when searching for updates. It has also received updates to its output, including a link the [Backstage upgrade helper](https://backstage.github.io/upgrade-helper) and silenced `yarn install` output.
+- c6bbafb516: Updated the default [sucrase](https://github.com/alangpierce/sucrase)-based Jest transform to include source maps if the environment variable `ENABLE_SOURCE_MAPS` is non-empty. This can be used to better support editor test debugging integrations.
+- Updated dependencies
+  - @backstage/config-loader@0.9.4
+  - @backstage/errors@0.2.1
+  - @backstage/release-manifests@0.0.2
+
 ## 0.13.2
 
 ### Patch Changes

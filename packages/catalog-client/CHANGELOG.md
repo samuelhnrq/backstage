@@ -1,5 +1,33 @@
 # @backstage/catalog-client
 
+## 0.7.0
+
+### Minor Changes
+
+- 8eda0e7a9c: **BREAKING**: Removed the explicit `DiscoveryApi` and `FetchApi` export symbols,
+  which were unnecessary duplicates from the well known core ones.
+
+  The `CATALOG_FILTER_EXISTS` symbol's value has changed. However, this should not
+  affect any code in practice.
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- 216725b434: Updated to use new names for `parseLocationRef` and `stringifyLocationRef`
+- 244d24ebc4: Export the `Location` type that was previously exported by the `@backstage/catalog-model` package.
+- 538ca90790: Deprecated the following types used by the catalog client, and created new
+  corresponding types to make them more consistent:
+
+  - `CatalogEntitiesRequest` -> `GetEntitiesRequest`
+  - `CatalogListResponse` was removed and generally replaced with `GetEntitiesResponse` (which does not use a type parameter argument)
+  - `CatalogEntityAncestorsRequest`-> `GetEntityAncestorsRequest`
+  - `CatalogEntityAncestorsResponse` -> `GetEntityAncestorsResponse`
+
+- 27eccab216: Replaces use of deprecated catalog-model constants.
+- Updated dependencies
+  - @backstage/errors@0.2.1
+  - @backstage/catalog-model@0.10.0
+
 ## 0.6.0
 
 ### Minor Changes

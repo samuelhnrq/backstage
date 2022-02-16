@@ -1,5 +1,15 @@
 # @backstage/plugin-git-release-manager
 
+## 0.3.12
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- Updated dependencies
+  - @backstage/core-components@0.8.9
+  - @backstage/core-plugin-api@0.6.1
+  - @backstage/integration@0.7.3
+
 ## 0.3.11
 
 ### Patch Changes

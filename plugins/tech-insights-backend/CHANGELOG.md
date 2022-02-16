@@ -1,5 +1,16 @@
 # @backstage/plugin-tech-insights-backend
 
+## 0.2.5
+
+### Patch Changes
+
+- 538ca90790: Use updated type names from `@backstage/catalog-client`
+- Updated dependencies
+  - @backstage/backend-common@0.10.8
+  - @backstage/catalog-client@0.7.0
+  - @backstage/errors@0.2.1
+  - @backstage/catalog-model@0.10.0
+
 ## 0.2.4
 
 ### Patch Changes

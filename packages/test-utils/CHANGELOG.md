@@ -1,5 +1,16 @@
 # @backstage/test-utils
 
+## 0.2.5
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- Updated dependencies
+  - @backstage/core-app-api@0.5.3
+  - @backstage/core-plugin-api@0.6.1
+  - @backstage/plugin-permission-common@0.5.0
+  - @backstage/plugin-permission-react@0.3.1
+
 ## 0.2.4
 
 ### Patch Changes

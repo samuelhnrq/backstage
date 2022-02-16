@@ -1,5 +1,13 @@
 # @backstage/plugin-rollbar-backend
 
+## 0.1.22
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- Updated dependencies
+  - @backstage/backend-common@0.10.8
+
 ## 0.1.21
 
 ### Patch Changes

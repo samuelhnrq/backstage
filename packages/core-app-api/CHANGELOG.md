@@ -1,5 +1,13 @@
 # @backstage/core-app-api
 
+## 0.5.3
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- Updated dependencies
+  - @backstage/core-plugin-api@0.6.1
+
 ## 0.5.2
 
 ### Patch Changes

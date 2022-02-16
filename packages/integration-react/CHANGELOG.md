@@ -1,5 +1,16 @@
 # @backstage/integration-react
 
+## 0.1.22
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- f0e2f7a56a: Updated the `ScmAuth` error message for missing provider configurations to link to `ScmAuthApi` setup documentation.
+- Updated dependencies
+  - @backstage/core-components@0.8.9
+  - @backstage/core-plugin-api@0.6.1
+  - @backstage/integration@0.7.3
+
 ## 0.1.21
 
 ### Patch Changes

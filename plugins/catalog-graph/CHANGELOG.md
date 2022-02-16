@@ -1,5 +1,18 @@
 # @backstage/plugin-catalog-graph
 
+## 0.2.11
+
+### Patch Changes
+
+- 538ca90790: Use updated type names from `@backstage/catalog-client`
+- 7aeb491394: Replace use of deprecated `ENTITY_DEFAULT_NAMESPACE` constant with `DEFAULT_NAMESPACE`.
+- Updated dependencies
+  - @backstage/catalog-client@0.7.0
+  - @backstage/core-components@0.8.9
+  - @backstage/core-plugin-api@0.6.1
+  - @backstage/plugin-catalog-react@0.6.15
+  - @backstage/catalog-model@0.10.0
+
 ## 0.2.10
 
 ### Patch Changes

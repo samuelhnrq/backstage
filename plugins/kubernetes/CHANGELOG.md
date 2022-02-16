@@ -1,5 +1,17 @@
 # @backstage/plugin-kubernetes
 
+## 0.5.8
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- Updated dependencies
+  - @backstage/core-components@0.8.9
+  - @backstage/core-plugin-api@0.6.1
+  - @backstage/plugin-catalog-react@0.6.15
+  - @backstage/catalog-model@0.10.0
+  - @backstage/plugin-kubernetes-common@0.2.3
+
 ## 0.5.7
 
 ### Patch Changes

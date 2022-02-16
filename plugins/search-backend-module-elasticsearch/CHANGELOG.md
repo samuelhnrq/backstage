@@ -1,5 +1,13 @@
 # @backstage/plugin-search-backend-module-elasticsearch
 
+## 0.0.9
+
+### Patch Changes
+
+- 4c0332e55c: chore(deps-dev): bump `@elastic/elasticsearch-mock` from 0.3.0 to 1.0.0
+- Updated dependencies
+  - @backstage/search-common@0.2.3
+
 ## 0.0.8
 
 ### Patch Changes

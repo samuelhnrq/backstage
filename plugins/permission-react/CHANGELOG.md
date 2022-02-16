@@ -1,5 +1,14 @@
 # @backstage/plugin-permission-react
 
+## 0.3.1
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- Updated dependencies
+  - @backstage/core-plugin-api@0.6.1
+  - @backstage/plugin-permission-common@0.5.0
+
 ## 0.3.0
 
 ### Minor Changes

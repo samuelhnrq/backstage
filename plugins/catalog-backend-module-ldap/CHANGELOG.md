@@ -1,5 +1,16 @@
 # @backstage/plugin-catalog-backend-module-ldap
 
+## 0.3.13
+
+### Patch Changes
+
+- 244d24ebc4: Import `Location` from the `@backstage/catalog-client` package.
+- 27eccab216: Replaces use of deprecated catalog-model constants.
+- Updated dependencies
+  - @backstage/plugin-catalog-backend@0.21.4
+  - @backstage/errors@0.2.1
+  - @backstage/catalog-model@0.10.0
+
 ## 0.3.12
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @backstage/plugin-permission-node
 
+## 0.5.0
+
+### Minor Changes
+
+- 8c646beb24: **BREAKING** `PermissionCriteria` now requires at least one condition in `anyOf` and `allOf` arrays. This addresses some ambiguous behavior outlined in #9280.
+
+### Patch Changes
+
+- Updated dependencies
+  - @backstage/backend-common@0.10.8
+  - @backstage/errors@0.2.1
+  - @backstage/plugin-auth-node@0.1.1
+  - @backstage/plugin-permission-common@0.5.0
+
 ## 0.4.3
 
 ### Patch Changes

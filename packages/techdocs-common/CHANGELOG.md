@@ -1,5 +1,18 @@
 # @backstage/techdocs-common
 
+## 0.11.8
+
+### Patch Changes
+
+- 216725b434: Updated to use new names for `parseLocationRef` and `stringifyLocationRef`
+- 7aeb491394: Replace use of deprecated `ENTITY_DEFAULT_NAMESPACE` constant with `DEFAULT_NAMESPACE`.
+- Updated dependencies
+  - @backstage/backend-common@0.10.8
+  - @backstage/errors@0.2.1
+  - @backstage/integration@0.7.3
+  - @backstage/catalog-model@0.10.0
+  - @backstage/search-common@0.2.3
+
 ## 0.11.7
 
 ### Patch Changes

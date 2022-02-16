@@ -1,5 +1,13 @@
 # @backstage/plugin-catalog-graphql
 
+## 0.3.2
+
+### Patch Changes
+
+- 1ed305728b: Bump `node-fetch` to version 2.6.7 and `cross-fetch` to version 3.1.5
+- Updated dependencies
+  - @backstage/catalog-model@0.10.0
+
 ## 0.3.1
 
 ### Patch Changes

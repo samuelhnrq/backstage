@@ -1,5 +1,19 @@
 # @backstage/plugin-todo-backend
 
+## 0.1.22
+
+### Patch Changes
+
+- edbc03814a: Replace usage of `serializeEntityRef` with `stringifyEntityRef`
+- 216725b434: Updated to use new names for `parseLocationRef` and `stringifyLocationRef`
+- 27eccab216: Replaces use of deprecated catalog-model constants.
+- Updated dependencies
+  - @backstage/backend-common@0.10.8
+  - @backstage/catalog-client@0.7.0
+  - @backstage/errors@0.2.1
+  - @backstage/integration@0.7.3
+  - @backstage/catalog-model@0.10.0
+
 ## 0.1.21
 
 ### Patch Changes
