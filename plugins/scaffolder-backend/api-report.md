@@ -30,6 +30,7 @@ import { TaskSpec } from '@backstage/plugin-scaffolder-common';
 import { TaskSpecV1beta2 } from '@backstage/plugin-scaffolder-common';
 import { TaskSpecV1beta3 } from '@backstage/plugin-scaffolder-common';
 import { TemplateEntityV1beta2 } from '@backstage/plugin-scaffolder-common';
+import { TemplateInfo } from '@backstage/plugin-scaffolder-common';
 import { TemplateMetadata } from '@backstage/plugin-scaffolder-common';
 import { UrlReader } from '@backstage/backend-common';
 import { Writable } from 'stream';
@@ -48,6 +49,7 @@ export type ActionContext<Input extends JsonObject> = {
   output(name: string, value: JsonValue): void;
   createTemporaryDirectory(): Promise<string>;
   metadata?: TemplateMetadata;
+  templateInfo?: TemplateInfo;
 };
 
 // Warning: (ae-missing-release-tag) "CatalogEntityClient" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
