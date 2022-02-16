@@ -25,7 +25,15 @@ import React, {
   useState,
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Grid, makeStyles, useTheme } from '@material-ui/core';
+import {
+  Grid,
+  makeStyles,
+  useTheme,
+  Theme,
+  lighten,
+  alpha,
+} from '@material-ui/core';
+import { red, pink, green, purple, yellow } from '@material-ui/core/colors';
 
 import { EntityName } from '@backstage/catalog-model';
 import { useApi, configApiRef } from '@backstage/core-plugin-api';
@@ -121,6 +129,13 @@ export const withTechDocsReaderProvider =
  */
 export const useTechDocsReader = () => useContext(TechDocsReaderContext);
 
+type TypographyHeadings = Pick<
+  Theme['typography'],
+  'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+>;
+
+type TypographyHeadingsKeys = keyof TypographyHeadings;
+
 /**
  * Hook that encapsulates the behavior of getting raw HTML and applying
  * transforms to it in order to make it function at a basic level in the
@@ -209,109 +224,263 @@ export const useTechDocsReaderDom = (entityRef: EntityName): Element | null => {
         simplifyMkdocsFooter(),
         addGitFeedbackLink(scmIntegrationsApi),
         injectCss({
+          // Variables
           css: `
-          body {
-            font-family: ${theme.typography.fontFamily};
-            --md-text-color: ${theme.palette.text.primary};
-            --md-text-link-color: ${theme.palette.primary.main};
+          :host {
+            /* font */
+            --md-default-fg-color: ${theme.palette.text.primary};
 
-            --md-code-fg-color: ${theme.palette.text.primary};
-            --md-code-bg-color: ${theme.palette.background.paper};
-            --md-accent-fg-color: ${theme.palette.primary.main};
-            --md-default-fg-color--lightest: ${theme.palette.textVerySubtle};
-          }
-          .codehilite .gd, .highlight .gd { 
-            background-color: ${isDarkTheme ? 'rgba(248,81,73,0.65)' : '#fdd'};
-          }
-          .codehilite .gi, .highlight .gi {
-            background-color: ${isDarkTheme ? 'rgba(46,160,67,0.65)' : '#dfd'};
-          }
-          .highlight .kd {
-            color: ${isDarkTheme ? '#4aaaf7' : '#3b78e7'};
-          }
-           .highlight .k {
-            color: ${isDarkTheme ? '#4aaaf7' : '#3b78e7'};
-          }
-          .highlight .nx {
-            color: ${isDarkTheme ? '#ff53a3' : '#ec407a'};
-          }
-          .highlight .s1 {
-            color: ${isDarkTheme ? '#1cad46' : 'rgb(13, 144, 79)'};
-          }
-          .highlight .kt {
-            color: ${isDarkTheme ? '#4aaaf7' : '#3e61a2'};
-          }
-          .md-main__inner { margin-top: 0; }
-          .md-sidebar {  position: fixed; bottom: 100px; width: 20rem; }
-          .md-sidebar--secondary { right: 2rem; }
-          .md-content { margin-bottom: 50px }
-          .md-footer { position: fixed; bottom: 0px; }
-          .md-footer-nav__link { width: 20rem;}
-          .md-content { margin-left: 20rem; max-width: calc(100% - 20rem * 2 - 3rem); }
-          .md-typeset { font-size: 1rem; }
-          .md-typeset h1, .md-typeset h2, .md-typeset h3 { font-weight: bold; }
-          .md-nav { font-size: 1rem; }
-          .md-grid { max-width: 90vw; margin: 0 }
-          .md-typeset blockquote {
-            color: ${theme.palette.textSubtle};
-            border-left: 0.2rem solid ${theme.palette.textVerySubtle};
-          }
-          .md-typeset hr {
-            border-bottom: 0.05rem dotted ${theme.palette.textVerySubtle};
-          }
-          .md-typeset table:not([class]) {
-            font-size: 1rem;
-            border: 1px solid ${theme.palette.text.primary};
-            border-bottom: none;
-            border-collapse: collapse;
-          }
-          .md-typeset table:not([class]) td, .md-typeset table:not([class]) th {
-            border-bottom: 1px solid ${theme.palette.text.primary};
-          }
-          .md-typeset table:not([class]) th { font-weight: bold; }
-          .md-typeset .admonition, .md-typeset details {
-            font-size: 1rem;
+            /* background */
+            --md-default-bg-color:${theme.palette.background.default};
+            --md-default-bg-color--light: ${lighten(
+              theme.palette.text.primary,
+              0.7,
+            )};
+            --md-default-bg-color--lighter: ${lighten(
+              theme.palette.text.primary,
+              0.3,
+            )};
+            --md-default-bg-color--lightest: ${lighten(
+              theme.palette.text.primary,
+              0.12,
+            )};
+
+            /* primary */
+            --md-primary-fg-color: ${theme.palette.primary.main};
+            --md-primary-fg-color--light: ${theme.palette.primary.light};
+            --md-primary-fg-color--dark: ${theme.palette.primary.dark};
+            --md-primary-bg-color: ${theme.palette.primary.contrastText};
+            --md-primary-bg-color--light: ${lighten(
+              theme.palette.primary.contrastText,
+              0.7,
+            )};
+
+            /* accent */
+            --md-accent-fg-color: var(--md-primary-fg-color);
+
+            /* shadow */
+            --md-shadow-z1: ${theme.shadows[1]};
+            --md-shadow-z2: ${theme.shadows[2]};
+            --md-shadow-z3: ${theme.shadows[3]};
           }
           
-          /* style the checkmarks of the task list */
-          .md-typeset .task-list-control .task-list-indicator::before {
-            background-color: ${theme.palette.action.disabledBackground};
-          }
-          .md-typeset .task-list-control [type="checkbox"]:checked + .task-list-indicator:before {
-            background-color: ${theme.palette.success.main};
-          }
-          /**/
+          :host > * {
+            /* code */
+            --md-code-fg-color: ${theme.palette.text.primary};
+            --md-code-bg-color: ${theme.palette.background.paper};
+            --md-code-hl-color: ${alpha(yellow[500], 0.5)};
+            --md-code-hl-number-color: ${red[500]};
+            --md-code-hl-string-color: ${green[500]};
+            --md-code-hl-special-color: ${pink[500]};
+            --md-code-hl-constant-color: ${purple[500]};
+            --md-code-hl-keyword-color: ${
+              isDarkTheme
+                ? theme.palette.primary.light
+                : theme.palette.primary.dark
+            };
+            --md-code-hl-function-color: ${
+              isDarkTheme
+                ? theme.palette.secondary.light
+                : theme.palette.secondary.dark
+            };
+            --md-code-hl-name-color: var(--md-code-fg-color);
+            --md-code-hl-comment-color: var(--md-default-fg-color--light);
+            --md-code-hl-generic-color: var(--md-default-fg-color--light);
+            --md-code-hl-variable-color: var(--md-default-fg-color--light);
+            --md-code-hl-operator-color: var(--md-default-fg-color--light);
+            --md-code-hl-punctuation-color: var(--md-default-fg-color--light);
 
-          @media screen and (max-width: 76.1875em) {
-            .md-nav {
-              background-color: ${theme.palette.background.default};
-              transition: none !important
+            /* typeset */
+            --md-typeset-font-size: ${theme.typography.pxToRem(
+              (theme.typography as unknown as { htmlFontSize: number })
+                .htmlFontSize,
+            )};
+            --md-typeset-color: var(--md-default-fg-color);
+            --md-typeset-a-color: var(--md-accent-fg-color);
+            --md-typeset-mark-color: ${
+              isDarkTheme
+                ? theme.palette.warning.dark
+                : theme.palette.warning.light
+            };
+            --md-typeset-del-color: ${
+              isDarkTheme ? theme.palette.error.dark : theme.palette.error.light
+            };
+            --md-typeset-ins-color: ${
+              isDarkTheme
+                ? theme.palette.success.dark
+                : theme.palette.success.light
+            };
+            --md-typeset-table-color: ${alpha(
+              theme.palette.text.primary,
+              0.12,
+            )};
             }
-            .md-sidebar--secondary { display: none; }
-            .md-sidebar--primary { left: ${
-              isPinned ? '242px' : '72px'
-            }; width: 10rem }
-            .md-content { margin-left: 10rem; max-width: calc(100% - 10rem); }
-            .md-content__inner { font-size: 0.9rem }
+          `,
+        }),
+        injectCss({
+          // Reset
+          css: `
+            body {
+              --md-text-color: var(--md-default-fg-color);
+              --md-text-link-color: var(--md-accent-fg-color);
+              --md-text-font-family: ${theme.typography.fontFamily};
+              font-family: var(--md-text-font-family);
+              background-color: unset;
+            }
+          `,
+        }),
+        injectCss({
+          // Layout
+          css: `
+            .md-grid {
+              max-width: 90vw;
+              margin: 0;
+            }
+
+            .md-nav {
+              font-size: ${theme.typography.body1.fontSize};
+            }
+
+            .md-main__inner {
+              margin-top: 0;
+            }
+            
+            .md-sidebar {
+              position: fixed;
+              bottom: 100px;
+              width: 20rem;
+            }
+            .md-sidebar--secondary {
+              right: 2rem;
+            }
+            
+            .md-content {
+              max-width: calc(100% - 20rem * 2 - 3rem);
+              margin-left: 20rem;
+              margin-bottom: 50px;
+            }
+            
             .md-footer {
-              position: static;
-              padding-left: 10rem;
+              position: fixed;
+              bottom: 0px;
             }
             .md-footer-nav__link {
-              /* footer links begin to overlap at small sizes without setting width */
-              width: 50%;
+              width: 20rem;
             }
-            .md-nav--primary .md-nav__title {
-              white-space: normal;
-              height: auto;
-              line-height: 1rem;
-              cursor: auto;
+
+            @media screen and (max-width: 76.1875em) {
+              .md-nav {
+                transition: none !important
+                background-color: ${theme.palette.background.default};
+              }
+
+              .md-nav--primary .md-nav__title {
+                cursor: auto;
+                white-space: normal;
+                line-height: 1rem;
+                height: auto;
+              }
+              .md-nav--primary > .md-nav__title [for="none"] {
+                padding-top: 0;
+              }
+              
+              .md-sidebar--secondary {
+                display: none;
+              }
+              .md-sidebar--primary {
+                width: 10rem;
+                left: ${isPinned ? '242px' : '72px'};
+              }
+
+              .md-content {
+                max-width: calc(100% - 10rem);
+                margin-left: 10rem;
+              }
+              .md-content__inner {
+                font-size: 0.9rem;
+              }
+
+              .md-footer {
+                position: static;
+                padding-left: 10rem;
+              }
+              .md-footer-nav__link {
+                /* footer links begin to overlap at small sizes without setting width */
+                width: 50%;
+              }
             }
-            .md-nav--primary > .md-nav__title [for="none"] {
-              padding-top: 0;
+          `,
+        }),
+        injectCss({
+          // Typeset
+          css: `        
+            .md-typeset {
+              font-size: var(--md-typeset-font-size);
             }
-          }
-        `,
+
+            ${['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].reduce<string>(
+              (style, heading) =>
+                style.concat(`
+                  .md-typeset ${heading} {
+                    font-family: ${
+                      (theme.typography as TypographyHeadings)[
+                        heading as TypographyHeadingsKeys
+                      ].fontFamily
+                    };
+                    font-weight: ${
+                      (theme.typography as TypographyHeadings)[
+                        heading as TypographyHeadingsKeys
+                      ].fontWeight
+                    };
+                    font-size: ${
+                      typeof (theme.typography as TypographyHeadings)[
+                        heading as TypographyHeadingsKeys
+                      ].fontSize === 'number'
+                        ? theme.typography.pxToRem(
+                            ((theme.typography as TypographyHeadings)[
+                              heading as TypographyHeadingsKeys
+                            ].fontSize as number) * 0.5,
+                          )
+                        : (theme.typography as TypographyHeadings)[
+                            heading as TypographyHeadingsKeys
+                          ].fontSize
+                    };
+                    line-height: ${
+                      (theme.typography as TypographyHeadings)[
+                        heading as TypographyHeadingsKeys
+                      ].lineHeight
+                    }; 
+                  }
+                `),
+              '',
+            )}
+            
+            .md-typeset hr {
+              border-bottom: 0.05rem dotted ${theme.palette.divider};
+            }
+            
+            .md-typeset details {
+              font-size: var(--md-typeset-font-size);
+            }
+            
+            .md-typeset blockquote {
+              color: ${theme.palette.textSubtle};
+              border-left: 0.2rem solid ${theme.palette.textVerySubtle};
+            }
+
+            .md-typeset table:not([class]) {
+              font-size: var(--md-typeset-font-size);
+              border: 1px solid ${theme.palette.text.primary};
+              border-bottom: none;
+              border-collapse: collapse;
+            }
+            .md-typeset table:not([class]) th {
+              font-weight: bold;
+            }
+            .md-typeset table:not([class]) td, .md-typeset table:not([class]) th {
+              border-bottom: 1px solid ${theme.palette.text.primary};
+            }
+          `,
         }),
         injectCss({
           // Disable CSS animations on link colors as they lead to issues in dark
@@ -333,7 +502,45 @@ export const useTechDocsReaderDom = (entityRef: EntityName): Element | null => {
             .md-typeset pre > code::-webkit-scrollbar-thumb:hover {
               background-color: hsla(0, 0%, 0%, 0.87);
             }
+
+            .md-clipboard:after {
+              content: unset;
+            }
+
+            .codehilite .gd { 
+              background-color: ${
+                isDarkTheme ? 'rgba(248,81,73,0.65)' : '#fdd'
+              };
+            }
+            .codehilite .gi {
+              background-color: ${
+                isDarkTheme ? 'rgba(46,160,67,0.65)' : '#dfd'
+              };
+            }
+            .highlight .nx {
+              color: ${isDarkTheme ? '#ff53a3' : '#ec407a'};
+            }
         `,
+        }),
+        injectCss({
+          //  Style the checked label of the tabbed set
+          css: `
+          .md-typeset .tabbed-set>input:first-child:checked~.tabbed-labels>:first-child, .md-typeset .tabbed-set>input:nth-child(10):checked~.tabbed-labels>:nth-child(10), .md-typeset .tabbed-set>input:nth-child(11):checked~.tabbed-labels>:nth-child(11), .md-typeset .tabbed-set>input:nth-child(12):checked~.tabbed-labels>:nth-child(12), .md-typeset .tabbed-set>input:nth-child(13):checked~.tabbed-labels>:nth-child(13), .md-typeset .tabbed-set>input:nth-child(14):checked~.tabbed-labels>:nth-child(14), .md-typeset .tabbed-set>input:nth-child(15):checked~.tabbed-labels>:nth-child(15), .md-typeset .tabbed-set>input:nth-child(16):checked~.tabbed-labels>:nth-child(16), .md-typeset .tabbed-set>input:nth-child(17):checked~.tabbed-labels>:nth-child(17), .md-typeset .tabbed-set>input:nth-child(18):checked~.tabbed-labels>:nth-child(18), .md-typeset .tabbed-set>input:nth-child(19):checked~.tabbed-labels>:nth-child(19), .md-typeset .tabbed-set>input:nth-child(2):checked~.tabbed-labels>:nth-child(2), .md-typeset .tabbed-set>input:nth-child(20):checked~.tabbed-labels>:nth-child(20), .md-typeset .tabbed-set>input:nth-child(3):checked~.tabbed-labels>:nth-child(3), .md-typeset .tabbed-set>input:nth-child(4):checked~.tabbed-labels>:nth-child(4), .md-typeset .tabbed-set>input:nth-child(5):checked~.tabbed-labels>:nth-child(5), .md-typeset .tabbed-set>input:nth-child(6):checked~.tabbed-labels>:nth-child(6), .md-typeset .tabbed-set>input:nth-child(7):checked~.tabbed-labels>:nth-child(7), .md-typeset .tabbed-set>input:nth-child(8):checked~.tabbed-labels>:nth-child(8), .md-typeset .tabbed-set>input:nth-child(9):checked~.tabbed-labels>:nth-child(9) {
+            color: var(--md-accent-fg-color);
+            border-color: var(--md-accent-fg-color);
+          }
+          `,
+        }),
+        injectCss({
+          //  Style the checkmarks of the task list
+          css: `
+            .md-typeset .task-list-control .task-list-indicator::before {
+              background-color: ${theme.palette.action.disabledBackground};
+            }
+            .md-typeset .task-list-control [type="checkbox"]:checked + .task-list-indicator:before {
+              background-color: ${theme.palette.success.main};
+            }
+          `,
         }),
         injectCss({
           // Admonitions and others are using SVG masks to define icons. These
@@ -345,6 +552,10 @@ export const useTechDocsReaderDom = (entityRef: EntityName): Element | null => {
           // example in the backend), we have to copy from main*.css and modify
           // them.
           css: `
+            .md-typeset .admonition {
+              font-size: var(--md-typeset-font-size);
+            }
+
             :host {
               --md-admonition-icon--note: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>');
               --md-admonition-icon--abstract: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4V5m0 4h16v2H4V9m0 4h16v2H4v-2m0 4h10v2H4v-2z"/></svg>');
@@ -358,16 +569,20 @@ export const useTechDocsReaderDom = (entityRef: EntityName): Element | null => {
               --md-admonition-icon--bug: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 12h-4v-2h4m0 6h-4v-2h4m6-6h-2.81a5.985 5.985 0 00-1.82-1.96L17 4.41 15.59 3l-2.17 2.17a6.002 6.002 0 00-2.83 0L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8z"/></svg>');
               --md-admonition-icon--example: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 13v-2h14v2H7m0 6v-2h14v2H7M7 7V5h14v2H7M3 8V5H2V4h2v4H3m-1 9v-1h3v4H2v-1h2v-.5H3v-1h1V17H2m2.25-7a.75.75 0 01.75.75c0 .2-.08.39-.21.52L3.12 13H5v1H2v-.92L4 11H2v-1h2.25z"/></svg>');
               --md-admonition-icon--quote: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 17h3l2-4V7h-6v6h3M6 17h3l2-4V7H5v6h3l-2 4z"/></svg>');
-            }
-            :host {
               --md-footnotes-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.42L5.83 13H21V7h-2z"/></svg>');
-            }
-            :host {
               --md-details-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>');
-            }
-            :host {
               --md-tasklist-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>');
               --md-tasklist-icon--checked: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>');
+              --md-nav-icon--prev: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>');
+              --md-nav-icon--next: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>');
+              --md-toc-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>');
+              --md-clipboard-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12V1z"/></svg>');
+              --md-search-result-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h7c-.41-.25-.8-.56-1.14-.9-.33-.33-.61-.7-.86-1.1H6V4h7v5h5v1.18c.71.16 1.39.43 2 .82V8l-6-6m6.31 16.9c1.33-2.11.69-4.9-1.4-6.22-2.11-1.33-4.91-.68-6.22 1.4-1.34 2.11-.69 4.89 1.4 6.22 1.46.93 3.32.93 4.79.02L22 23.39 23.39 22l-3.08-3.1m-3.81.1a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5z"/></svg>');
+              --md-source-forks-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm0 2.122a2.25 2.25 0 1 0-1.5 0v.878A2.25 2.25 0 0 0 5.75 8.5h1.5v2.128a2.251 2.251 0 1 0 1.5 0V8.5h1.5a2.25 2.25 0 0 0 2.25-2.25v-.878a2.25 2.25 0 1 0-1.5 0v.878a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 5 6.25v-.878zm3.75 7.378a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm3-8.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5z"/></svg>');
+              --md-source-repositories-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 1 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 0 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 0 1 1-1h8zM5 12.25v3.25a.25.25 0 0 0 .4.2l1.45-1.087a.25.25 0 0 1 .3 0L8.6 15.7a.25.25 0 0 0 .4-.2v-3.25a.25.25 0 0 0-.25-.25h-3.5a.25.25 0 0 0-.25.25z"/></svg>');
+              --md-source-stars-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694v.001z"/></svg>');
+              --md-source-version-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 0 1 .25-.25h5.025a.25.25 0 0 1 .177.073l6.25 6.25a.25.25 0 0 1 0 .354l-5.025 5.025a.25.25 0 0 1-.354 0l-6.25-6.25a.25.25 0 0 1-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.75 1.75 0 0 1 1 7.775zM6 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>');
+              --md-version-icon: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="m310.6 246.6-127.1 128c-7.1 6.3-15.3 9.4-23.5 9.4s-16.38-3.125-22.63-9.375l-127.1-128C.224 237.5-2.516 223.7 2.438 211.8S19.07 192 32 192h255.1c12.94 0 24.62 7.781 29.58 19.75s3.12 25.75-6.08 34.85z"/></svg>');
             }
         `,
         }),
@@ -379,15 +594,28 @@ export const useTechDocsReaderDom = (entityRef: EntityName): Element | null => {
       name,
       namespace,
       scmIntegrationsApi,
-      theme.typography.fontFamily,
+      theme.shadows,
+      theme.typography,
+      theme.palette.divider,
       theme.palette.text.primary,
-      theme.palette.primary.main,
+      theme.palette.textVerySubtle,
       theme.palette.background.paper,
       theme.palette.background.default,
-      theme.palette.textVerySubtle,
       theme.palette.textSubtle,
-      theme.palette.action.disabledBackground,
+      theme.palette.primary.main,
+      theme.palette.primary.dark,
+      theme.palette.primary.light,
+      theme.palette.primary.contrastText,
+      theme.palette.secondary.dark,
+      theme.palette.secondary.light,
+      theme.palette.error.dark,
+      theme.palette.error.light,
       theme.palette.success.main,
+      theme.palette.success.dark,
+      theme.palette.success.light,
+      theme.palette.warning.dark,
+      theme.palette.warning.light,
+      theme.palette.action.disabledBackground,
       isDarkTheme,
       isPinned,
     ],
